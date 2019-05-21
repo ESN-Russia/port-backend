@@ -1,7 +1,33 @@
-from django.shortcuts import render
+from django.http import HttpRequest, HttpResponse
 
-from django.http import HttpResponse
+from rest_framework import views, generics
+from rest_framework.request import Request as RestRequest
+from rest_framework.response import Response as RestResponse
+
+import requests
+
+from .serializers import *
 
 
-def index(request):
-    return HttpResponse("Hello, world.")
+class DataView(views.APIView):
+    def get(self, request: RestRequest) -> RestResponse:
+        origin = request.META.get('HTTP_ORIGIN', 'localhost:3000').split('/')[
+            -1]
+        print(origin)
+
+        try:
+            settings = SiteSettings.objects.get(url=origin)
+        except SiteSettings.DoesNotExist:
+            return RestResponse(status=401, exception=True)
+
+        return RestResponse(SiteSettingSerializer(settings).data)
+
+
+def validate_ticket(request: HttpRequest):
+    print(request.GET)
+    ticket = request.GET['ticket']
+    d = requests.get('https://accounts.esn.org/cas/serviceValidate', params={
+        'service': "https%3A%2F%2Fesnrussia-web-backend.herokuapp.com%2Fvalidate_ticket%2F",
+        'ticket': ticket
+    })
+    return HttpResponse(d.content)

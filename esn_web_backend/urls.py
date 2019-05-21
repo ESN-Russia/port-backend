@@ -19,7 +19,8 @@ from django.urls import path, include
 from api import views as api_views
 
 urlpatterns = [
-    path('', api_views.index),
+    path('get_admin/', api_views.DataView.as_view()),
+    path('validate_ticket/', api_views.validate_ticket),
     path('admin/', admin.site.urls),
     path('api-auth/', include('rest_framework.urls'))
 ]
