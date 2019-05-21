@@ -1,0 +1,1 @@
+web: gunicorn esn_web_backend.wsgi
