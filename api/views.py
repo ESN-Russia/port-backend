@@ -27,7 +27,7 @@ def validate_ticket(request: HttpRequest):
     print(request.GET)
     ticket = request.GET['ticket']
     d = requests.get('https://accounts.esn.org/cas/serviceValidate', params={
-        'service': 'https%3A//esnrussia-web-backend.herokuapp.com/validate_ticket/',
+        'service': 'https://esnrussia-web-backend.herokuapp.com/validate_ticket/',
         'ticket': ticket
     })
     print(d.url)
