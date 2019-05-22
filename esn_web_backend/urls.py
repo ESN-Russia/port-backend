@@ -20,7 +20,8 @@ from api import views as api_views
 
 urlpatterns = [
     path('get_admin/', api_views.DataView.as_view()),
-    path('validate_ticket/', api_views.validate_ticket),
+    path('validate_ticket/<str:token_id>/', api_views.validate_ticket),
+    path('login_redirect/', api_views.login_redirect),
     path('admin/', admin.site.urls),
     path('api-auth/', include('rest_framework.urls'))
 ]
