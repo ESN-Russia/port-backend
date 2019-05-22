@@ -16,11 +16,16 @@ class DataView(views.APIView):
         origin = request.META.get('HTTP_ORIGIN', 'localhost:3000').split('/')[
             -1]
 
+        print('token_id', token_id)
+        print('origin', origin)
+
         try:
             token = EsnAuthToken.objects.get(nanoid=token_id)
             if token.url != origin or not token.username:
+                print('token mismatch', token, origin)
                 return RestResponse(status=401, exception=True)
         except EsnAuthToken.DoesNotExist:
+            print('token do not exists')
             return RestResponse(status=401, exception=True)
 
         try:

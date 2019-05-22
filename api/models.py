@@ -30,3 +30,6 @@ class EsnAuthToken(models.Model):
     username = models.CharField(max_length=255)
     expire_at = models.DateTimeField(
         default=dt.datetime.now() + dt.timedelta(days=1))
+
+    def __str__(self):
+        return f'{self.username} vs {self.url}'
