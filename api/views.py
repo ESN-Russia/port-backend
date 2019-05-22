@@ -47,9 +47,10 @@ def validate_ticket(request: HttpRequest, token_id):
         'service': f'{CAS_CALLBACK}/{token_id}/',
         'ticket': ticket
     })
-    data = xmltodict.parse(d.content)
-    print(data)
-    username = d.text.split()[0]
+    username = xmltodict.parse(
+        d.content
+    )['cas:serviceResponse']['cas:authenticationSuccess']['cas:user']
+
     token = EsnAuthToken.objects.get(nanoid=token_id)
     token.username = username
     token.save()
