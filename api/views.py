@@ -12,9 +12,10 @@ from .serializers import *
 
 class DataView(views.APIView):
     def get(self, request: RestRequest) -> RestResponse:
-        token_id = request.META.get('X-AUTH', '_')
+        token_id = request.META.get('HTTP_X_AUTH', '_')
         origin = request.META.get('HTTP_ORIGIN', 'localhost:3000').split('/')[
             -1]
+
         try:
             token = EsnAuthToken.objects.get(nanoid=token_id)
             if token.url != origin or not token.username:
